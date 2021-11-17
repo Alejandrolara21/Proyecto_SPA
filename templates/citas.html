@@ -1,0 +1,47 @@
+{%extends "layoutAdmin.html"%} {%block body%}
+<div class="flex-navbar contenedor-login">
+    <h1>Administrador</h1>
+    <nav class="navegacion">
+        <a href="{{url_for('sesionAdministrador')}}">Servicios</a>
+        <a href="{{url_for('citasAgendadas')}}">Citas</a>
+    </nav>
+</div>
+<div class="contenedor-login seccion">
+    <div class="contenedor-login">
+        <div id="formulario">
+            <h1>CITAS</h1>
+        </div>
+        <div class="datosCitas">
+            <table class="tabla_servicios">
+                <thead>
+                    <th>id</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                </thead>
+                <tbody>
+                    {% for citas in data: %}
+                        <tr>
+                            <td>{{citas.id}}</td>
+                            <td>{{citas.fecha}}</td>
+                            <td>{{citas.hora}}</td>
+                            <td><select class="estadoCitas" data-idCita="{{citas.id}}">
+                                <option value="1" 
+                                {% if(citas.estado == 1):%} 
+                                    selected
+                                {% endif %}
+                                >Finalizado</option>
+                                <option value="2"
+                                {% if(citas.estado == 2):%} 
+                                    selected
+                                {% endif %}
+                                >Pendiente</option>
+                            </select></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{%endblock%}

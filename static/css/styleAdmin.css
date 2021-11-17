@@ -1,0 +1,160 @@
+.text-center {
+  text-align: center;
+}
+
+/** Media Queries **/
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6rem;
+}
+
+p {
+  color: #ffffff;
+  font-size: 2rem;
+}
+
+.contenedor {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  color: #0da6f3;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3.6rem;
+}
+
+h3 {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.contenedor-login{
+    margin: 5rem auto;
+    width: 95%;
+
+    max-width: 120rem;
+}
+
+.formulario-login {
+    font-size: 2rem;
+}
+
+.formulario-login legend {
+    font-size: 2.8rem;
+    font-family: "Poppins", sans-serif;
+}
+.formulario-login input:not([type="submit"]) {
+    display: block;
+    width: 100%;
+    padding: .3rem 1rem;
+    margin-bottom: 2rem;
+}
+
+.boton{
+    display: block;
+    background-color: #0da6f3;
+    color: white;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    border: none;
+    text-decoration: none;
+    width: 100%;
+}
+
+.alerta{
+    width: 100%;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.exito{
+    background-color: rgb(165, 218, 85);
+}
+
+.error{
+    background-color: rgba(230, 74, 74, 0.801);
+    color: white;
+}
+
+
+.tabla_servicios{
+    width: 100%;
+    margin: 2rem 0;
+    text-align: center;
+    border-collapse:collapse;
+}
+th{
+    background-color: #0da6f3;
+    border-bottom: 3px solid black;
+    font-size: 2.6rem;
+    padding: 1rem 0;
+}
+td{
+    border-bottom: 2px solid black;
+    font-size: 2rem;
+    padding: 1rem 0;
+}
+
+.hidden{
+    display: none;
+}
+
+.navegacion{
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.navegacion a{
+    text-decoration: none;
+    font-size: 2rem;
+    padding: 1rem;
+    color: black;
+    border-radius: 2rem;
+}
+
+.navegacion a:hover{
+    background-color: #0da6f3;
+    color: white;
+}
+
+.flex-navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

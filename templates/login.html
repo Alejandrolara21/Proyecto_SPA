@@ -1,0 +1,18 @@
+{%extends "layoutAdmin.html"%} {%block body%}
+<div class="contenedor-login seccion">
+    <h1>Inicio de Sesion</h1>
+    <form action="{{url_for('validar')}}" class="formulario-login" method="POST">
+        <fieldset>
+            <legend>Datos</legend>
+            <label for="correo">Correo Electronico</label>
+            <input id="correo" name="correo" type="text">
+            <label for="password">Constraseña</label>
+            <input id="password" name="password" type="password">
+        </fieldset>                
+        <input class="boton" type="submit" value="Iniciar Sesion">
+    </form>
+    {% if(mensaje): %}
+        <div class="alerta error">{{mensaje}}</div>
+    {% endif %}
+</div>
+{%endblock%}

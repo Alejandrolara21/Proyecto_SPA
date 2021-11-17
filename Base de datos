@@ -1,0 +1,87 @@
+CREATE DATABASE barberia;
+
+USE barberia;
+
+CREATE TABLE estado(
+	id INT(3) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(40),
+	PRIMARY KEY (id)
+);
+
+
+CREATE TABLE cliente(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(60) NOT NULL,
+	telefono VARCHAR(10) NOT NULL,
+	email VARCHAR(30) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE servicios(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(80) NOT NULL,
+	precio DOUBLE(10,2) NOT NULL,
+	estado INT(3) NOT NULL,
+	PRIMARY KEY (id),
+	KEY estado(estado),
+	CONSTRAINT estado_FK
+	FOREIGN KEY (estado) REFERENCES estado(id)
+);
+
+CREATE TABLE citas(
+	id INT (11) NOT NULL,
+	fecha DATE NOT NULL,
+	hora TIME NOT NULL,
+	clienteId INT(11) NOT NULL,
+	id_estado INT(3) NOT NULL,
+	PRIMARY KEY (id),
+	KEY id_estado(id_estado),
+	CONSTRAINT id_estado_FK
+	FOREIGN KEY (id_estado) REFERENCES estado(id),
+	KEY clienteId(clienteId),
+	CONSTRAINT cliente_FK
+	FOREIGN KEY (clienteId) REFERENCES cliente(id)
+);
+
+
+CREATE TABLE citasServicios(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	citaId INT(11) NOT NULL,
+	servicioId INT(11) NOT NULL,
+	PRIMARY KEY (id),
+	KEY citaId (citaId),
+	CONSTRAINT citas_fk
+	FOREIGN KEY (citaId) REFERENCES citas(id),
+	KEY servicioId (servicioId),
+	CONSTRAINT servicioId_fk
+	FOREIGN KEY (servicioId) REFERENCES servicios(id)
+);
+
+
+
+CREATE TABLE administrador(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(60) NOT NULL,
+	correo VARCHAR(60) NOT NULL,
+	password CHAR(60) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+INSERT INTO administrador (correo,password, nombre, apellido) VALUES ('alejandro@correo.com','123456','Alejandro','Guacaneme')
+
+INSERT INTO estado (nombre) VALUES ('finalizado');
+INSERT INTO estado (nombre) VALUES ('pendiente');
+INSERT INTO estado (nombre) VALUES ('activo');
+INSERT INTO estado (nombre) VALUES ('inactivo');
+
+
+   INSERT INTO servicios ( nombre, precio, estado ) VALUES
+        ('Corte de Cabello Niño', 60, 3),
+        ('Corte de Cabello Hombre', 80, 3),
+        ('Corte de Barba', 60, 3),
+        ('Peinado Mujer', 80, 3),
+        ('Peinado Hombre', 60, 3),
+        ('Tinte',300, 3),
+        ('Uñas', 400, 3),
+        ('Lavado de Cabello', 50, 3),
+        ('Tratamiento Capilar', 150, 3);
