@@ -6,7 +6,7 @@ from werkzeug.utils import redirect
 from modelo.servicios import Servicios
 from modelo.cliente import Cliente
 from modelo.citas import Citas
-from modelo.citasServicios import citasServicios
+from modelo.citasServicios import CitasServicios
 from modelo.administrador import Administrador
 import random
 
@@ -54,149 +54,127 @@ def sesionAdministrador():
     data = servicio.consultarServiciosAdmin(db)
     return render_template('administrador.html',data=data)
 
+
+
+## CRUD SERVICIO
 @app.route('/crearServicio',methods=['POST'])
 def crearServicio():
     if request.method == 'POST':
         objServicio = request.get_json()
-        print(objServicio)
         servicio = Servicios("",objServicio['nombre'],objServicio['precio'],3)
         resultado = servicio.insertarServicio(db)
+        respuesta = validarConsultaSql(resultado)
+        return respuesta
 
-        if(resultado != "ERROR"):
-            data = servicio.consultarServiciosAdmin(db)
-            jsonData = {}
-            jsonData['servicios'] = []
-
-            for servicio in data:
-                arreglo_json = {
-                    'id': f'{servicio.id}',
-                    'nombre': f'{servicio.nombre}',
-                    'precio': f'{servicio.precio}',
-                    'estado': f'{servicio.estado}'
-                }
-
-                jsonData['servicios'].append(arreglo_json)
-
-            respuesta = make_response(jsonify(jsonData),200)
-            return render_template('listadoServicios.html',data=data)
-        else:
-            respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
-            return respuesta
-    
-@app.route('/cambiarEstadoServicio',methods=["POST"])
-def cambiarEstadoServicio():
-    if request.method == 'POST':
-        objEstado = request.get_json()
-        servicio = Servicios(objEstado['id'],"","",objEstado['estado'])
-        resultado = servicio.cambiarEstado(db)
-        if(resultado != "ERROR"):
-            data = servicio.consultarServiciosAdmin(db)
-            jsonData = {}
-            jsonData['servicios'] = []
-
-            for servicio in data:
-                arreglo_json = {
-                    'id': f'{servicio.id}',
-                    'nombre': f'{servicio.nombre}',
-                    'precio': f'{servicio.precio}',
-                    'estado': f'{servicio.estado}'
-                }
-
-                jsonData['servicios'].append(arreglo_json)
-
-            respuesta = make_response(jsonify(jsonData),200)
-            return render_template('listadoServicios.html',data=data)
-        else:
-            respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
-            return respuesta
-
-
-@app.route('/cambiarEstadoCitas',methods=["POST"])
-def cambiarEstadoCitas():
-    if request.method == 'POST':
-        objEstado = request.get_json()
-        citas = Citas(objEstado['id'],"","","",objEstado['estado'])
-        resultado = citas.cambiarEstado(db)
-        if(resultado != "ERROR"):
-            data = citas.consultarCitas(db)
-            jsonData = {}
-            jsonData['citas'] = []
-
-            for citas in data:
-                arreglo_json = {
-                    'id': f'{citas.id}',
-                    'fecha': f'{citas.fecha}',
-                    'hora': f'{citas.hora}',
-                    'estado': f'{citas.estado}'
-                }
-
-                jsonData['citas'].append(arreglo_json)
-
-            respuesta = make_response(jsonify(jsonData),200)
-            return render_template('listadoCitas.html',data=data)
-        else:
-            respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
-            return respuesta
-        
 @app.route('/eliminarServicio',methods=["GET"])
 def eliminarServicio():
     idServicio = request.args.get("id")
-    servicio = Servicios(idServicio,"","","")
-    resultado = servicio.eliminarServicio(db)
+    respuesta = idServicio
 
-    if(resultado != "ERROR"):
-            data = servicio.consultarServiciosAdmin(db)
-            jsonData = {}
-            jsonData['servicios'] = []
+    citaServicio = CitasServicios("","",idServicio)
+    resultadoCiSer = citaServicio.eliminarCitasServicio(db)
 
-            for servicio in data:
-                arreglo_json = {
-                    'id': f'{servicio.id}',
-                    'nombre': f'{servicio.nombre}',
-                    'precio': f'{servicio.precio}',
-                    'estado': f'{servicio.estado}'
-                }
-
-                jsonData['servicios'].append(arreglo_json)
-
-            respuesta = make_response(jsonify(jsonData),200)
-            return render_template('listadoServicios.html',data=data)
+    if(resultadoCiSer != "ERROR"):
+        servicio = Servicios(idServicio,"","","")
+        resultado = servicio.eliminarServicio(db)
+        respuesta = validarConsultaSql(resultado)
+        return respuesta
     else:
         respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
         return respuesta
-
 
 @app.route('/editarServicio',methods=["POST"])
 def editarServicio():
     objServicio = request.get_json()
     servicio = Servicios(objServicio['id'],objServicio['nombre'],objServicio['precio'],"")
     resultado = servicio.actualizarServicio(db)
+    respuesta = validarConsultaSql(resultado)
+    return respuesta
+    
+@app.route('/listadoServiciosAdmin')
+def listadoServiciosAdmin():
+    servicio = Servicios()
+    data = servicio.consultarServiciosAdmin(db)
+    if(data != "ERROR"):
+        jsonData = {}
+        jsonData['servicios'] = []
 
-    if(resultado != "ERROR"):
-            data = servicio.consultarServiciosAdmin(db)
-            jsonData = {}
-            jsonData['servicios'] = []
+        for servicio in data:
+            arreglo_json = {
+                'id': f'{servicio.id}',
+                'nombre': f'{servicio.nombre}',
+                'precio': f'{servicio.precio}',
+                'estado': f'{servicio.estado}'
+            }
 
-            for servicio in data:
-                arreglo_json = {
-                    'id': f'{servicio.id}',
-                    'nombre': f'{servicio.nombre}',
-                    'precio': f'{servicio.precio}',
-                    'estado': f'{servicio.estado}'
-                }
+            jsonData['servicios'].append(arreglo_json)
 
-                jsonData['servicios'].append(arreglo_json)
+        respuesta = make_response(jsonify(jsonData),200)
+        return respuesta
+    else:
+        respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
+        return respuesta
 
-            respuesta = make_response(jsonify(jsonData),200)
-            return render_template('listadoServicios.html',data=data)
+@app.route('/cambiarEstadoServicio',methods=["POST"])
+def cambiarEstadoServicio():
+    if request.method == 'POST':
+        objEstado = request.get_json()
+        print(objEstado['id'])
+        servicio = Servicios(objEstado['id'],"","",objEstado['estado'])
+        resultado = servicio.cambiarEstado(db)
+        respuesta = validarConsultaSql(resultado)
+        return respuesta
+
+
+
+## CRUD CITAS
+@app.route('/cambiarEstadoCitas',methods=["POST"])
+def cambiarEstadoCitas():
+    if request.method == 'POST':
+        objEstado = request.get_json()
+        citas = Citas(objEstado['id'],"","","",objEstado['estado'])
+        resultado = citas.cambiarEstado(db)
+        respuesta = validarConsultaSql(resultado)
+        return respuesta
+           
+
+@app.route('/listadoCitas')
+def listadoCitas():
+    cita = Citas()
+    data = cita.consultarCitas(db)
+
+    #print(data)
+    if(data != "ERROR"):
+        jsonData = {}
+        jsonData['citas'] = []
+
+        for cita in data:
+            arreglo_json = {
+                'id': f'{cita.id}',
+                'fecha': f'{cita.fecha}',
+                'hora': f'{cita.hora}',
+                'estado': f'{cita.estado}'
+            }
+
+            jsonData['citas'].append(arreglo_json)
+
+        respuesta = make_response(jsonify(jsonData),200)
+        return respuesta
     else:
         respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
         return respuesta
 
 
+## VERIFICACION DE LA CONSULTA SQL
+def validarConsultaSql(resultado):
+    if(resultado != "ERROR"):
+        respuesta = make_response(jsonify({"message": "Sucessful"}),200)
+        return respuesta
+    else:
+        respuesta = make_response(jsonify({"message": "ERROR MYSQL"}),500)
+        return respuesta
+
 ### CLIENTE
-
-
 @app.route('/listadoServicios')
 def listadoServicios():
     servicio = Servicios()
@@ -242,7 +220,7 @@ def agendarCita():
 
             if(resultadoInsertadoCita == "OKAY"):
                 for servicio in objCita['cita']['servicios']:
-                    citaServicio = citasServicios("",idCita,servicio['id'])
+                    citaServicio = CitasServicios("",idCita,servicio['id'])
                     citaServicio.insertarCitaServicio(db)
 
                 return "OKAY"
@@ -264,7 +242,7 @@ def agendarCita():
 
                 if(resultadoInsertadoCita == "OKAY"):
                     for servicio in objCita['cita']['servicios']:
-                        citaServicio = citasServicios("",idCita,servicio['id'])
+                        citaServicio = CitasServicios("",idCita,servicio['id'])
                         citaServicio.insertarCitaServicio(db)
 
                     return "OKAY"

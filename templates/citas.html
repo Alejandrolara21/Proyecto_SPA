@@ -25,7 +25,7 @@
                             <td>{{citas.id}}</td>
                             <td>{{citas.fecha}}</td>
                             <td>{{citas.hora}}</td>
-                            <td><select class="estadoCitas" data-idCita="{{citas.id}}">
+                            <td><select class="estadoCitas" data-id="{{citas.id}}">
                                 <option value="1" 
                                 {% if(citas.estado == 1):%} 
                                     selected

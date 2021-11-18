@@ -54,7 +54,7 @@
                             <td>{{servicio.id}}</td>
                             <td class="nombre{{servicio.id}}">{{servicio.nombre}}</td>
                             <td class="precio{{servicio.id}}">{{servicio.precio}}</td>
-                            <td><select class="estado" data-idServicio="{{servicio.id}}">
+                            <td><select class="estado" data-id="{{servicio.id}}">
                                 <option value="3" 
                                 {% if(servicio.estado == 3):%} 
                                     selected
