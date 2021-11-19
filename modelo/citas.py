@@ -1,3 +1,5 @@
+from utils.db import db
+
 class Citas:
     def __init__(self, id="", fecha="",hora="",clienteId="",estado=""):
         self.id = id

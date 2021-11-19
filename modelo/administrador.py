@@ -1,3 +1,5 @@
+from utils.db import db
+
 class Administrador:
     def __init__(self,id="",nombre="",correo="",password=""):
         self.id = id

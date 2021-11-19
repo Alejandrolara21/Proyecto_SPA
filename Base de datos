@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS barberia;
 CREATE DATABASE barberia;
 
 USE barberia;
@@ -62,12 +63,13 @@ CREATE TABLE citasServicios(
 CREATE TABLE administrador(
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(60) NOT NULL,
+	apellido VARCHAR(60) NOT NULL,
 	correo VARCHAR(60) NOT NULL,
 	password CHAR(60) NOT NULL,
 	PRIMARY KEY (id)
 );
 
-INSERT INTO administrador (correo,password, nombre, apellido) VALUES ('alejandro@correo.com','123456','Alejandro','Guacaneme')
+INSERT INTO administrador (correo,password, nombre, apellido) VALUES ('alejandro@correo.com','123456','Alejandro','Guacaneme');
 
 INSERT INTO estado (nombre) VALUES ('finalizado');
 INSERT INTO estado (nombre) VALUES ('pendiente');

@@ -1,6 +1,4 @@
-import re
-from MySQLdb.cursors import RE_INSERT_VALUES
-from flask import Flask, render_template, request,url_for,make_response,jsonify
+from flask import Flask, render_template, request,make_response,jsonify
 from flask_mysqldb import MySQL
 from werkzeug.utils import redirect
 from modelo.servicios import Servicios
@@ -18,21 +16,21 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '7312010'
 app.config['MYSQL_DB'] = 'barberia'
 
-db = MySQL(app)
+MySQL(app)
 
 @app.route('/')
 def inicio():
-    return render_template('index.html');
+    return render_template('index.html')
 
 @app.route('/login')
 def login():
-    return render_template('login.html');
+    return render_template('login.html')
 
 @app.route('/validar',methods=['POST'])
 def validar():
     if request.method == "POST":
-        correo = request.form['correo'];
-        password = request.form['password'];
+        correo = request.form['correo']
+        password = request.form['password']
         administrador = Administrador("","",correo,password)
         resultado = administrador.validarAdministrador(db)
         if(resultado != "ERROR"):

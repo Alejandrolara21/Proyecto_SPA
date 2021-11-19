@@ -1,3 +1,5 @@
+from utils.db import db
+
 class Servicios:
     def __init__(self, id="", nombre="",precio="",estado=""):
         self.id = id

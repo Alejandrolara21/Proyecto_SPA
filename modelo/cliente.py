@@ -1,3 +1,5 @@
+from utils.db import db
+
 class Cliente:
     def __init__(self,id="",nombre="",telefono="",email=""):
         self.id = id
